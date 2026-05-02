@@ -27,5 +27,14 @@ services:
       DB_NAME: taskdb
       DB_PORT: 5432
 
+  frontend:
+    build: ./frontend
+    container_name: task-frontend
+    restart: always
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
 volumes:
   pgdata:
