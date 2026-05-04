@@ -1,0 +1,94 @@
+/* WRAPPER */
+.login-wrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f5f6f8;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, Arial;
+}
+
+/* CARD */
+.login-box {
+  width: 100%;
+  max-width: 360px;
+  background: white;
+  padding: 28px 24px;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: center;
+  border: 1px solid #eee;
+}
+
+/* TITLE */
+.login-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: -6px;
+}
+
+.login-subtitle {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 10px;
+}
+
+/* INPUT */
+.login-input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #eee;
+  background: #fafafa;
+  font-size: 15px;
+  transition: 0.2s;
+  color: #111;
+}
+
+.login-input:focus {
+  border-color: #111;
+  outline: none;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(0,0,0,0.08);
+}
+
+/* BUTTON */
+.login-btn {
+  width: 100%;
+  padding: 10px;
+  background: #111;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.login-btn:hover {
+  background: #000;
+}
+
+/* REGISTER LINK */
+.login-register {
+  font-size: 14px;
+  color: #555;
+  margin-top: 5px;
+}
+
+.register-link {
+  margin-left: 5px;
+  color: #111;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.register-link:hover {
+  text-decoration: underline;
+}

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import api from "../api/api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import "../styles/login.css";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -16,42 +17,50 @@ export default function Login() {
       });
 
       localStorage.setItem("token", res.data.token);
-
-      // 👉 redirect vero
       navigate("/");
-
     } catch (err) {
       console.log(err);
-      alert("Login fallito");
+      alert("Credenziali non valide");
     }
   };
 
   return (
-    <div
-      style={{
-        width: 300,
-        margin: "100px auto",
-        display: "flex",
-        flexDirection: "column",
-        gap: 10
-      }}
-    >
-      <h2>Login</h2>
+    <div className="login-wrapper">
 
-      <input
-        placeholder="email"
-        onChange={(e) => setEmail(e.target.value)}
-      />
+      <div className="login-box">
 
-      <input
-        type="password"
-        placeholder="password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
+        <h1 className="login-title">Task Manager</h1>
+        <p className="login-subtitle">Accedi al tuo spazio</p>
 
-      <button onClick={handleLogin}>
-        Login
-      </button>
+        <input
+          className="login-input"
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <input
+          className="login-input"
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <button className="login-btn" onClick={handleLogin}>
+          Accedi
+        </button>
+
+        <p className="login-register">
+          Non hai un account?
+          <Link to="/register" className="register-link">
+            Registrati ora
+          </Link>
+        </p>
+
+      </div>
+
     </div>
   );
 }
