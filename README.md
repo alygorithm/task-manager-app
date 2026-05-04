@@ -117,16 +117,7 @@ L'applicazione è composta da una classica architettura a 3 livelli (3-tier arch
 
 # Diagramma architetturale
 
-```mermaid
-flowchart LR
-
-U[Utente] --> F[Frontend React + Vite (Nginx)]
-
-F -->|HTTP REST API| B[Backend Node.js + Express]
-
-B -->|SQL queries| D[(PostgreSQL)]
-
-```
+![Architettura del sistema](./docs/diagramma%20architetturale.png)
 
 # Descrizione dei componenti
 1. Frontend (React + Vite + Nginx)
