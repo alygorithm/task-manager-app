@@ -107,3 +107,88 @@ DB_NAME=taskdb
 DB_PORT=5432
 JWT_SECRET=your_secret
 ```
+
+## 9. Architettura del sistema
+# Struttura generale
+L'applicazione è composta da una classica architettura a 3 livelli (3-tier architecture), containerizzata tramite Docker:
+- Frontend -> interfaccia utente
+- Backend -> logica applicativa e API REST
+- Database -> persistenza dei dati
+
+# Diagramma architetturale
+
+```mermaid
+flowchart LR
+
+U[Utente] --> F[Frontend React + Vite (Nginx)]
+
+F -->|HTTP REST API| B[Backend Node.js + Express]
+
+B -->|SQL queries| D[(PostgreSQL)]
+
+```
+
+# Descrizione dei componenti
+1. Frontend (React + Vite + Nginx)
+Il frontend è sviluppato in React e costruito tramite Vite. In fase di produzione viene servito tramite un container Nginx statico.
+
+Responsabilità principali:
+- gestione dell'interfaccia utente
+- navigazione tra le pagine (Dashboard, Calendario, Profilo)
+- comunicazione con il backend tramite chiamate HTTP (fetch/axios)
+
+Il frontend non comunica mai direttamente con il database ma passa sempre dal backend.
+
+2. Backend (Node.js + Express)
+Il backend implementa un'API REST sviluppata in Node.js con Express.
+
+Responsabilità principali:
+- gestione logica dell'applicazione
+- autenticazione (token JWT)
+- gestione task (CRUD)
+- comunicazione con PostgreSQL
+
+Il backend espone endpoint come:
+- /tasks
+- /login
+- eventuali endpoint protetti tramite token
+
+3. Database (PostgreSQL)
+Il database PostgreSQL è utilizzato per la persistenza dei dati.
+
+Contiene principalmente:
+- utenti
+- task
+- eventuali relazioni tra entità
+
+Il database è isolato in un container Docker e non è esposto direttamente al client, ma solo al backend.
+
+# Flusso dei dati
+Il flusso principale dell’applicazione è il seguente:
+
+1 - L’utente interagisce con il frontend
+2 - Il frontend invia richieste HTTP al backend
+3 - Il backend valida e processa la richiesta
+4 - Il backend esegue query SQL sul database
+5 - Il database restituisce i dati al backend
+6 - Il backend invia la risposta al frontend
+7 - Il frontend aggiorna l’interfaccia utente
+
+# Containerizzazione
+Lintero sistema è orchestrato tramite Docker Compose, che definisce 3 servizi: 
+- frontend -> container Nginx con build React
+- backend -> container Node.js
+- db -> container PostgreSQL
+
+I container comunicano tra di loro tramite una rete interna Docker. Il backend accede al database usando il nome del servizio db come host.
+
+## 10. Nota progettuale
+E' stata scelta questa architettura poichè separa chiaramente: 
+- presentazione (frontend)
+- logica (backend)
+- dati (database)
+
+Utilizzando questo approccio avremo dei miglioramenti riguardo:
+- scalabilità
+- manutenibilità
+- isolamento dai servizi
