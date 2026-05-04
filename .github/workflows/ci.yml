@@ -11,33 +11,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Clona il repo
+      # 1. Checkout repo
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Setup Node
+      # 2. Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
       # -------------------------
-      # BACKEND
+      # BACKEND - TEST BUILD
       # -------------------------
       - name: Install backend dependencies
         run: |
           cd backend
           npm install
 
-      - name: Check backend (basic run)
+      - name: Backend lint / smoke test
         run: |
           cd backend
-          node src/app.js &
-          sleep 5
-          echo "Backend started"
+          node -c src/app.js
 
       # -------------------------
-      # FRONTEND
+      # FRONTEND - BUILD CHECK
       # -------------------------
       - name: Install frontend dependencies
         run: |
@@ -50,7 +48,14 @@ jobs:
           npm run build
 
       # -------------------------
-      # DONE
+      # DOCKER BUILD (FULL STACK CHECK)
+      # -------------------------
+      - name: Build Docker images
+        run: |
+          docker compose build
+
+      # -------------------------
+      # FINAL STATUS
       # -------------------------
       - name: Success
-        run: echo "Pipeline completed successfully 🚀"
+        run: echo "CI Pipeline completed successfully"
