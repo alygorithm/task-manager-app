@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Calendar from "./pages/Calendar";
 import Profile from "./pages/Profile";
@@ -14,8 +15,11 @@ export default function App() {
     <BrowserRouter>
       <Routes>
 
+        {/* PUBLIC ROUTES */}
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />   
 
+        {/* PRIVATE ROUTES */}
         <Route
           path="/"
           element={
@@ -43,6 +47,7 @@ export default function App() {
           }
         />
 
+        {/* DEFAULT */}
         <Route path="*" element={<Navigate to="/" />} />
 
       </Routes>

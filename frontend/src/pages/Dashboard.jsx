@@ -7,34 +7,31 @@ export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
+  const [date, setDate] = useState("");
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
 
-  // 📅 FIX DATE
   const formatDate = (date) => {
     const d = new Date(date);
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
     const day = String(d.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
+    return `${y}-${m}-${day}`;
   };
 
   const [selectedDay, setSelectedDay] = useState(formatDate(new Date()));
 
-  // 🔄 LOAD
   useEffect(() => {
     const fetchTasks = async () => {
       try {
         const res = await api.get("/tasks");
         setTasks(res.data || []);
-      } catch (err) {
-        console.log(err);
+      } catch {
         setTasks([]);
       } finally {
         setLoading(false);
       }
     };
-
     fetchTasks();
   }, []);
 
@@ -43,82 +40,56 @@ export default function Dashboard() {
     setTasks(res.data || []);
   };
 
-  // ➕ CREATE
   const createTask = async () => {
-    if (!title.trim()) return;
-
-    await api.post("/tasks", {
-      title,
-      description: desc,
-      date: selectedDay
-    });
-
+    if (!title.trim() || !date) return;
+    await api.post("/tasks", { title, description: desc, date });
     setTitle("");
     setDesc("");
+    setDate("");
     setShowModal(false);
     loadTasks();
   };
 
-  // ❌ DELETE
   const deleteTask = async (id) => {
     await api.delete(`/tasks/${id}`);
     loadTasks();
   };
 
-  // 🔁 TOGGLE
   const toggleTask = async (id, completed) => {
-    await api.put(`/tasks/${id}`, {
-      completed: !completed
-    });
-
+    await api.put(`/tasks/${id}`, { completed: !completed });
     loadTasks();
   };
 
-  // 🚪 LOGOUT
-  const logout = () => {
-    localStorage.removeItem("token");
-    window.location.href = "/login";
-  };
+  const normalizeDate = (date) =>
+    new Date(date).toISOString().split("T")[0];
 
-  // 🧼 NORMALIZE
-  const normalizeDate = (date) => {
-    if (!date) return "";
-    return typeof date === "string"
-      ? date.split("T")[0]
-      : formatDate(date);
-  };
-
-  // 🎯 FILTER
   const filteredTasks = tasks.filter(
     (t) => normalizeDate(t.date) === selectedDay
   );
 
-  // 📅 WEEK
+  const taskMap = tasks.reduce((acc, t) => {
+    acc[normalizeDate(t.date)] = true;
+    return acc;
+  }, {});
+
   const getWeekDays = () => {
     const days = [];
     const today = new Date();
-
     for (let i = -3; i <= 3; i++) {
       const d = new Date(today);
       d.setDate(today.getDate() + i);
-
-      const date = formatDate(d);
-
       days.push({
-        date,
+        date: formatDate(d),
         day: d.toLocaleDateString("it-IT", { weekday: "short" }),
         num: d.getDate()
       });
     }
-
     return days;
   };
 
-  // 🧾 LABEL
   const formatDayLabel = (dateStr) => {
     const [y, m, d] = dateStr.split("-");
     const date = new Date(Number(y), Number(m) - 1, Number(d));
-
     return date.toLocaleDateString("it-IT", {
       weekday: "long",
       day: "2-digit",
@@ -128,38 +99,18 @@ export default function Dashboard() {
 
   return (
     <div className="app">
-
-      {/* TOP BAR IOS */}
       <div className="topbar">
-
-        <div className="top-left"></div>
-
-        <div className="top-title">
-          Task Manager
-        </div>
-
-        <button className="logout-btn" onClick={logout}>
-          Logout
-        </button>
-
+        <div className="top-title">Task Manager</div>
       </div>
 
-      {/* CONTENT */}
       <div className="container">
-
-        {/* CALENDAR */}
         <div className="ios-calendar">
           {getWeekDays().map((d) => {
-            const hasTasks = tasks.some(
-              (t) => normalizeDate(t.date) === d.date
-            );
-
+            const hasTasks = taskMap[d.date];
             return (
               <div
                 key={d.date}
-                className={`ios-day ${
-                  selectedDay === d.date ? "active" : ""
-                }`}
+                className={`ios-day ${selectedDay === d.date ? "active" : ""}`}
                 onClick={() => setSelectedDay(d.date)}
               >
                 <div className="weekday">
@@ -168,95 +119,103 @@ export default function Dashboard() {
 
                 <div className="number">{d.num}</div>
 
-                {hasTasks && <div className="dot" />}
+                {hasTasks && <div className="dot-mini" />}
               </div>
             );
           })}
         </div>
 
-        {/* DAY INFO */}
-        <h2 className="day-title">
-          {formatDayLabel(selectedDay)}
-        </h2>
+        <h2 className="day-title-strong">{formatDayLabel(selectedDay)}</h2>
 
-        {filteredTasks.length === 0 ? (
-          <p className="empty">Nessuna task per questo giorno</p>
-        ) : (
-          <p className="subinfo">
-            {filteredTasks.length} task programmate
-          </p>
-        )}
+        <div className="task-status">
+          <span className="status-dot"></span>
+          {filteredTasks.length === 0
+            ? "Nessuna task"
+            : `${filteredTasks.length} task presenti`}
+        </div>
 
-        {/* ADD */}
-        <button className="add-btn" onClick={() => setShowModal(true)}>
+        <button
+          className="add-btn"
+          onClick={() => {
+            setDate(selectedDay);
+            setShowModal(true);
+          }}
+        >
           + Nuova Task
         </button>
 
-        {/* TASK LIST */}
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          filteredTasks.map((task) => (
-            <div className="card" key={task.id}>
-              <div className="left">
-                <input
-                  type="checkbox"
-                  checked={task.completed}
-                  onChange={() =>
-                    toggleTask(task.id, task.completed)
-                  }
-                />
-
-                <span className={task.completed ? "done" : ""}>
-                  {task.title}
-                </span>
+        <div className="task-list">
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            filteredTasks.map((task) => (
+              <div className="card fade-in" key={task.id}>
+                <div className="left">
+                  <input
+                    type="checkbox"
+                    checked={task.completed}
+                    onChange={() => toggleTask(task.id, task.completed)}
+                  />
+                  <span className={task.completed ? "done" : ""}>
+                    {task.title}
+                  </span>
+                </div>
+                <button
+                  className="delete"
+                  onClick={() => deleteTask(task.id)}
+                >
+                  ✕
+                </button>
               </div>
-
-              <button
-                className="delete"
-                onClick={() => deleteTask(task.id)}
-              >
-                ✕
-              </button>
-            </div>
-          ))
-        )}
+            ))
+          )}
+        </div>
       </div>
 
-      {/* GLOBAL NAV */}
       <BottomNav />
 
-      {/* MODAL */}
       {showModal && (
-        <div className="modal-bg">
-          <div className="modal">
+        <div className="modal-bg" onClick={() => setShowModal(false)}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>Nuova Task</h2>
+              <button className="modal-close" onClick={() => setShowModal(false)}>✕</button>
+            </div>
 
+            <label className="modal-label">Titolo</label>
             <input
-              className="input"
-              placeholder="Titolo"
+              className="modal-input"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+              placeholder="Inserisci titolo"
             />
 
+            <label className="modal-label">Descrizione</label>
             <textarea
-              className="input"
-              placeholder="Descrizione"
+              className="modal-input textarea"
               value={desc}
               onChange={(e) => setDesc(e.target.value)}
+              placeholder="Aggiungi una descrizione"
             />
 
-            <button className="save" onClick={createTask}>
-              Save
-            </button>
+            <label className="modal-label">Data</label>
+            <div className="date-wrapper">
+              <input
+                className="modal-input date-input"
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+              />
+              <span className="calendar-icon">🗓</span>
+            </div>
 
-            <button onClick={() => setShowModal(false)}>
-              Cancel
-            </button>
-
+            <div className="modal-buttons">
+              <button className="modal-save" onClick={createTask}>Salva</button>
+              <button className="modal-cancel" onClick={() => setShowModal(false)}>Annulla</button>
+            </div>
           </div>
         </div>
       )}
-
     </div>
   );
 }

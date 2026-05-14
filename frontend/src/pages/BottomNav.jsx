@@ -11,21 +11,21 @@ export default function BottomNav() {
         className={location.pathname === "/" ? "active" : ""}
         onClick={() => navigate("/")}
       >
-        🏠 Home
+        Home
       </div>
 
       <div
         className={location.pathname === "/calendar" ? "active" : ""}
         onClick={() => navigate("/calendar")}
       >
-        📅 Calendar
+        Calendario
       </div>
 
       <div
         className={location.pathname === "/profile" ? "active" : ""}
         onClick={() => navigate("/profile")}
       >
-        👤 Profile
+        Profilo
       </div>
 
     </div>

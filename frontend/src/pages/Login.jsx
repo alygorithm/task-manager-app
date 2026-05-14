@@ -11,22 +11,19 @@ export default function Login() {
 
   const handleLogin = async () => {
     try {
-      const res = await api.post("/auth/login", {
-        email,
-        password,
-      });
+      const res = await api.post("/auth/login", { email, password });
 
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("email", res.data.email);
+
       navigate("/");
-    } catch (err) {
-      console.log(err);
+    } catch {
       alert("Credenziali non valide");
     }
   };
 
   return (
     <div className="login-wrapper">
-
       <div className="login-box">
 
         <h1 className="login-title">Task Manager</h1>
@@ -60,7 +57,6 @@ export default function Login() {
         </p>
 
       </div>
-
     </div>
   );
 }
