@@ -14,14 +14,15 @@ Realizzare una web app containerizzata composta da:
 ## 1. Architettura del progetto
 
 L'applicazione segue una 3-tier architecture:
-- **frontend** -> React + Vite (servito da Nginx in profuzione)
+- **frontend** -> React + Vite (servito da Nginx in produzione)
 - **backend** -> Node.js + Express (API REST)
 - **db** -> database PostgreSQL
 
 La comunicazione avviene tramite API REST tra frontend e backend, mentre il backend si occupa di comunicare con il database.
 
-#Diagramma Architetturale
-...
+# Diagramma Architetturale
+![Diagramma Architetturale](./docs/diagramma-architetturale.png)
+
 
 ---
 
@@ -91,5 +92,35 @@ docker compose up --build
 
 ---
 
+## 6. Avvio manuale (senza Docker)
 
+### 1. Requisiti
+- Node.js 18+
+- PostgreSQL 16+
+- npm o pnpm
 
+### Cartella backend
+
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+---
+
+### Cartella frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+### Esempio di credenziali
+
+```bash
+email: test@test.com
+password: 1234
+```
+(oppure inserisci le tue credenziali seed)
