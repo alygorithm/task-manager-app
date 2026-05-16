@@ -1,158 +1,110 @@
-.calendar-page {
-  min-height: 100vh;
-  background: #f6f7f9;
-
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
-
-  width: 100%;
-  max-width: 1100px;
-
-  margin: 0 auto;
-}
-
-/* HEADER */
+/* LAYOUT BASE */
 .calendar-header {
-  background: white;
-  padding: 16px;
-
-  border-bottom: 1px solid #eee;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 24px;
 }
 
-.month-title {
-  margin: 0;
+/* FRECCE SCURITE */
+.month-btn {
+  width: 42px;
+  height: 42px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: white;
+  color: #111; /* 👈 SCURITE */
 
   font-size: 20px;
   font-weight: 700;
 
-  text-transform: capitalize;
-  color: #111;
-}
-
-.month-btn {
-  background: none;
-  border: none;
-
-  font-size: 22px;
-  font-weight: bold;
-
   cursor: pointer;
 
-  padding: 6px 10px;
-
-  color: #111;
-
-  opacity: 0.7;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
   transition: 0.2s;
 }
 
 .month-btn:hover {
-  opacity: 1;
+  transform: translateY(-2px);
 }
 
-/* WEEKDAYS */
+/* CALENDARIO */
 .weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-
-  padding: 10px 14px 0;
-
-  background: white;
-
-  font-weight: bold;
-  color: #555;
-
-  font-size: 18px;
   text-align: center;
+  margin-bottom: 10px;
+  color: #777;
+  font-weight: 600;
 }
 
-/* GRID */
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-
-  gap: 8px;
-  padding: 14px;
-
-  background: white;
+  gap: 12px;
+  margin-bottom: 30px;
 }
 
-/* DAY CELL */
 .day {
-  height: 50px;
-
-  background: #f1f1f1;
-  border-radius: 12px;
+  height: 80px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  position: relative;
+  background: white;
+  border-radius: 16px;
+
+  font-weight: 600;
+
+  border: 1px solid #eee;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 
   cursor: pointer;
 
-  font-size: 15px;
-  font-weight: 600;
+  position: relative;
 
   transition: 0.2s;
 }
 
 .day:hover {
-  background: #e5e5e5;
+  transform: translateY(-2px);
 }
 
-/* ACTIVE DAY */
 .day.active {
-  background: #111;
+  background: #6a5acd;
   color: white;
-
-  transform: scale(1.05);
 }
 
-/* EMPTY PAD */
-.empty {
-  height: 50px;
-}
-
-/* DOT TASK */
 .dot {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
 
-  background: red;
+  background: #6a5acd;
 
   border-radius: 50%;
 
   position: absolute;
-  bottom: 6px;
+  bottom: 10px;
 }
 
-/* TASK SECTION */
-.task-section {
-  padding: 16px;
+.day.active .dot {
+  background: white;
 }
 
-.selected-date {
-  font-size: 18px;
-  margin-bottom: 10px;
-
-  text-transform: capitalize;
-}
-
-/* TASK CARD */
+/* TASK */
 .task-card {
   background: white;
+  padding: 16px;
+  border-radius: 14px;
 
-  padding: 12px;
+  margin-bottom: 12px;
 
-  border-radius: 12px;
-  margin-bottom: 10px;
+  border: 1px solid #eee;
 
-  box-shadow: 0 2px 6px rgba(0,0,0,0.10);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 
   cursor: pointer;
 
@@ -163,199 +115,75 @@
   transform: translateY(-2px);
 }
 
-/* EMPTY */
-.empty-text {
-  color: #888;
-}
-
-/* MODAL OVERLAY */
+/* MODAL NUOVA VERSIONE */
 .modal-overlay {
   position: fixed;
   inset: 0;
 
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(0,0,0,0.35);
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  padding: 20px;
-
-  z-index: 1000;
-
-  animation: fadeIn 0.2s ease;
+  backdrop-filter: blur(3px);
 }
 
-/* MODAL */
 .task-modal {
-  width: 100%;
-  max-width: 420px;
-
   background: white;
+  width: 420px;
 
-  border-radius: 22px;
+  border-radius: 20px;
 
-  padding: 24px;
-
-  position: relative;
+  padding: 26px;
 
   box-shadow: 0 10px 30px rgba(0,0,0,0.15);
 
-  animation: modalUp 0.2s ease;
+  position: relative;
 }
 
-/* MODAL TITLE */
+/* TITOLO MODAL PIÙ EVIDENTE */
 .task-modal h2 {
-  margin: 0 0 20px;
-
-  font-size: 24px;
-
+  margin-bottom: 18px;
+  font-size: 22px;
+  font-weight: 800;
   color: #111;
 }
 
-/* MODAL TEXT */
-.task-modal p {
-  margin: 8px 0;
-
-  color: #444;
-
-  line-height: 1.5;
+/* SEZIONI */
+.modal-section {
+  margin-bottom: 14px;
 }
 
-/* LABELS */
-.task-modal strong {
-  color: #111;
+.label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #777;
+  text-transform: uppercase;
 }
 
-/* CLOSE BUTTON */
+/* CLOSE */
 .close-btn {
   position: absolute;
+  top: 12px;
+  right: 12px;
 
-  top: 14px;
-  right: 14px;
+  border: none;
+  background: #f3f3f3;
+  border-radius: 10px;
 
   width: 34px;
   height: 34px;
 
-  border: none;
-  border-radius: 50%;
-
-  background: #f1f1f1;
-  color: #111;
-
-  font-size: 16px;
-  font-weight: bold;
-
   cursor: pointer;
-
-  transition: 0.2s;
 }
 
 .close-btn:hover {
   background: #e5e5e5;
 }
 
-/* ANIMATIONS */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes modalUp {
-  from {
-    transform: translateY(10px);
-    opacity: 0;
-  }
-
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-/* =========================
-   RESPONSIVE SAFE DESKTOP
-========================= */
-
-@media (min-width: 900px) {
-
-  .calendar-page {
-    padding-bottom: 40px;
-  }
-
-  .calendar-header {
-    padding: 24px 32px;
-  }
-
-  .month-title {
-    font-size: 28px;
-  }
-
-  .month-btn {
-    font-size: 28px;
-  }
-
-  .weekdays {
-    padding: 18px 24px 0;
-
-    font-size: 20px;
-  }
-
-  .calendar-grid {
-    gap: 14px;
-
-    padding: 24px;
-  }
-
-  .day {
-    height: 80px;
-
-    font-size: 18px;
-
-    border-radius: 16px;
-  }
-
-  .dot {
-    width: 8px;
-    height: 8px;
-
-    bottom: 10px;
-  }
-
-  .task-section {
-    padding: 24px;
-  }
-
-  .selected-date {
-    font-size: 26px;
-
-    margin-bottom: 18px;
-  }
-
-  .task-card {
-    padding: 18px;
-
-    border-radius: 16px;
-
-    font-size: 16px;
-  }
-
-  .task-modal {
-    max-width: 500px;
-
-    padding: 32px;
-  }
-
-  .task-modal h2 {
-    font-size: 30px;
-  }
-
-  .task-modal p {
-    font-size: 16px;
-  }
+/* DONE */
+.done {
+  color: #6a5acd;
+  font-weight: 700;
 }

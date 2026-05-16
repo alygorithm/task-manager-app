@@ -23,40 +23,50 @@ export default function Login() {
   };
 
   return (
-    <div className="login-wrapper">
-      <div className="login-box">
+    <div className="login-container">
 
-        <h1 className="login-title">Task Manager</h1>
-        <p className="login-subtitle">Accedi al tuo spazio</p>
-
-        <input
-          className="login-input"
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-
-        <input
-          className="login-input"
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        <button className="login-btn" onClick={handleLogin}>
-          Accedi
-        </button>
-
-        <p className="login-register">
-          Non hai un account?
-          <Link to="/register" className="register-link">
-            Registrati ora
-          </Link>
-        </p>
-
+      {/* LEFT SIDE */}
+      <div className="login-left">
+        <div className="login-brand">
+          <div className="brand-icon">✓</div>
+          <h1>Task Manager</h1>
+          <p>Organizza. Monitora. Completa.</p>
+        </div>
       </div>
+
+      {/* RIGHT SIDE */}
+      <div className="login-right">
+        <div className="login-form">
+
+          <h2>Bentornato!</h2>
+          <p className="login-sub">Accedi al tuo account</p>
+
+          <label>Email</label>
+          <input
+            type="email"
+            placeholder="esempio@mail.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <label>Password</label>
+          <input
+            type="password"
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          <button onClick={handleLogin}>Accedi</button>
+
+          <p className="login-switch">
+            Non hai un account?
+            <Link to="/register">Registrati</Link>
+          </p>
+
+        </div>
+      </div>
+
     </div>
   );
 }

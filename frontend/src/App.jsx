@@ -4,6 +4,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Calendar from "./pages/Calendar";
 import Profile from "./pages/Profile";
+import Tasks from "./pages/Tasks";
 
 const PrivateRoute = ({ children }) => {
   const isLogged = !!localStorage.getItem("token");
@@ -17,7 +18,7 @@ export default function App() {
 
         {/* PUBLIC ROUTES */}
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />   
+        <Route path="/register" element={<Register />} />
 
         {/* PRIVATE ROUTES */}
         <Route
@@ -43,6 +44,15 @@ export default function App() {
           element={
             <PrivateRoute>
               <Profile />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/tasks"
+          element={
+            <PrivateRoute>
+              <Tasks />
             </PrivateRoute>
           }
         />
