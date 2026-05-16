@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/profile.css";
-import LogoutModal from "../components/LogoutModal";
+import LogoutModal from "../components/ModalLogout";
 
 export default function Profile() {
   const navigate = useNavigate();

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/api";
 import "../styles/dashboard.css";
-import LogoutModal from "../components/LogoutModal";
+import LogoutModal from "../components/ModalLogout";
 
 export default function Dashboard() {
   const navigate = useNavigate();

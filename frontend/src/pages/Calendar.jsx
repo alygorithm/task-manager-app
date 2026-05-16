@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import api from "../api/api";
 import "../styles/calendar.css";
 import { useNavigate } from "react-router-dom";
-import LogoutModal from "../components/LogoutModal";
+import LogoutModal from "../components/ModalLogout";
 
 export default function Calendar() {
   const navigate = useNavigate();
@@ -10,7 +10,7 @@ export default function Calendar() {
   const [tasks, setTasks] = useState([]);
   const [selectedTask, setSelectedTask] = useState(null);
 
-  // 🔐 LOGOUT MODAL STATE
+  // LOGOUT MODAL STATE
   const [logoutOpen, setLogoutOpen] = useState(false);
 
   const today = new Date();
